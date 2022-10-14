@@ -17,3 +17,7 @@ This assignment uses life expectancy in Europe grouped by Country (or other, lik
 Open the `README.md` file inside each assignment and follow the instructions.
 
 > **Note**: Remember that all commands inside the Readme files assume you are in the root of the project.
+
+## Status Badged
+
+[![Workflow Pylint & Pytest](https://github.com/GoncaloJardim/faast-assignment-1/actions/workflows/pylint_pytest.yml/badge.svg?branch=main&event=pull_request)](https://github.com/GoncaloJardim/faast-assignment-1/actions/workflows/pylint_pytest.yml)
