@@ -20,4 +20,8 @@ Open the `README.md` file inside each assignment and follow the instructions.
 
 ## Status Badged
 
+Status Badge for PR:
 [![Workflow Pylint & Pytest](https://github.com/GoncaloJardim/faast-assignment-1/actions/workflows/pylint_pytest.yml/badge.svg?branch=main&event=pull_request)](https://github.com/GoncaloJardim/faast-assignment-1/actions/workflows/pylint_pytest.yml)
+
+Status Badge for Push to Main:
+[![Workflow Pylint & Pytest](https://github.com/GoncaloJardim/faast-assignment-1/actions/workflows/pylint_pytest.yml/badge.svg?branch=main&event=push)](https://github.com/GoncaloJardim/faast-assignment-1/actions/workflows/pylint_pytest.yml)
