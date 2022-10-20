@@ -1,6 +1,5 @@
 """Cleaning Life Expectancy Data for Assignment 1- Data Cleaning Challenge."""
 
-from ast import main
 import pathlib
 import argparse
 import pandas as pd
