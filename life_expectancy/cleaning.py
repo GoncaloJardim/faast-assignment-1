@@ -1,12 +1,11 @@
 """Cleaning Life Expectancy Data for Assignment 1- Data Cleaning Challenge."""
 
-#import pathlib
+import pathlib
 import argparse
 import pandas as pd
 import numpy as np
 
-
-#DATA_PATH =  pathlib.Path().resolve().parents[0] / 'life_expectancy/data'
+DATA_PATH =  pathlib.Path(__file__).parent / 'data'
 
 def clean_data(region= None):
     """ Clean_data function does the following:
@@ -20,13 +19,11 @@ def clean_data(region= None):
     """
 
     life_expectancy = pd.read_csv(
-        r"C:\Users\crocs\OneDrive - Universidade de Lisboa\Ambiente de Trabalho" \
-            r"\Data Science Courses\faast_se_foundations\faast-foundations" \
-                r"\assignments\life_expectancy\data\eu_life_expectancy_raw.tsv",
-                sep="\t")
+        DATA_PATH.joinpath("eu_life_expectancy_raw.tsv"),
+        sep="\t")
 
     life_expectancy.columns =  [
-        column_title.replace("\\","") for column_title 
+        column_title.replace("\\","") for column_title
         in life_expectancy.columns
         ]
 
@@ -66,10 +63,8 @@ def clean_data(region= None):
         ["unit","sex","age","region","year","value"]
         ]
     life_expectancy.to_csv(
-        r"C:\Users\crocs\OneDrive - Universidade de Lisboa\Ambiente de Trabalho" \
-            r"\Data Science Courses\faast_se_foundations\faast-foundations" \
-                r"\assignments\life_expectancy\data\pt_life_expectancy.csv",
-                index= False)
+        DATA_PATH.joinpath("pt_life_expectancy.csv"),
+        index= False)
 
 
 if __name__ == "__main__": # pragma: no cover
