@@ -8,7 +8,7 @@ import numpy as np
 
 DATA_PATH =  pathlib.Path(__file__).parent / 'data'
 
-def _load_data():
+def _load_data() -> pd.DataFrame:
     """Loads the data into a pd.DataFrame."""
 
     life_expectancy = pd.read_csv(
@@ -33,17 +33,20 @@ def _clean_data(
         in life_expectancy.columns
         ]
 
+    #DataFrame had multiple columns for years, thus melting columns into rows:
+    year_cols = life_expectancy.columns[1:]
     life_expectancy = pd.melt(life_expectancy,
                             id_vars= life_expectancy.columns[0],
                             var_name= "year",
-                            value_vars= life_expectancy.columns[1:],
+                            value_vars= year_cols,
                             value_name= "value")
 
     life_expectancy[["unit","sex","age","region"]] = (
         life_expectancy["unit,sex,age,geotime"].
         str.split(',', expand=True)
         )
-
+    #As a lot of cells are just filled with ': ', we replace with NaN
+    #and then drop any row that has NaN cells
     life_expectancy = (
         life_expectancy.
         drop(columns="unit,sex,age,geotime").
@@ -56,6 +59,7 @@ def _clean_data(
         str.split().str[0]
     )
 
+    #Filter Dataframe for the region the user wants. By default its PT:
     life_expectancy = life_expectancy[life_expectancy["region"]== region]
 
     life_expectancy = life_expectancy.astype(
@@ -67,14 +71,14 @@ def _clean_data(
 
     return life_expectancy
 
-def _save_data(life_expectancy: pd.DataFrame):
+def _save_data(life_expectancy: pd.DataFrame) -> None:
     """Saves DataFrame into desired directory."""
 
     life_expectancy.to_csv(
         DATA_PATH.joinpath("pt_life_expectancy.csv"),
         index= False)
 
-def main(region: str ="PT"):
+def main(region: str ="PT") -> None:
     """Pipeline with functions for:
     - Loading data;
     - Cleaning data;
