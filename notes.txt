@@ -1,0 +1,8 @@
+Have a test for when the code doesn't receive the input it should (if the region is not a string with 2 letters
+
+Ue patches instead of monkeypatch.
+
+
+
+For first fixture for created and expected I should have both types of regions PT and not PT
+Should have both rows.

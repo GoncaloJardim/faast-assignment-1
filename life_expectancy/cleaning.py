@@ -5,19 +5,16 @@ import argparse
 import pandas as pd
 import numpy as np
 
-
 DATA_PATH =  pathlib.Path(__file__).parent / 'data'
 
-def _load_data() -> pd.DataFrame:
+def load_data() -> pd.DataFrame:
     """Loads the data into a pd.DataFrame."""
 
-    life_expectancy = pd.read_csv(
-    DATA_PATH.joinpath("eu_life_expectancy_raw.tsv"),
-    sep="\t")
+    return pd.read_csv(
+        DATA_PATH.joinpath("eu_life_expectancy_raw.tsv"),
+        sep="\t")
 
-    return life_expectancy
-
-def _clean_data(
+def clean_data(
     life_expectancy: pd.DataFrame,
     region: str = "PT") -> pd.DataFrame:
     """ Clean_data function does the following:
@@ -71,12 +68,13 @@ def _clean_data(
 
     return life_expectancy
 
-def _save_data(life_expectancy: pd.DataFrame) -> None:
+def save_data(life_expectancy: pd.DataFrame) -> None:
     """Saves DataFrame into desired directory."""
 
-    life_expectancy.to_csv(
+    return  life_expectancy.to_csv(
         DATA_PATH.joinpath("pt_life_expectancy.csv"),
         index= False)
+
 
 def main(region: str ="PT") -> None:
     """Pipeline with functions for:
@@ -85,9 +83,9 @@ def main(region: str ="PT") -> None:
     - Saving data;"""
 
     (
-        _load_data().
-        pipe(_clean_data, region).
-        pipe(_save_data)
+        load_data().
+        pipe(clean_data, region).
+        pipe(save_data)
     )
 
 if __name__ == "__main__": # pragma: no cover
@@ -105,4 +103,5 @@ if __name__ == "__main__": # pragma: no cover
     region_letters = args.region
 
     #Run pipeline:
+
     main(region_letters)
