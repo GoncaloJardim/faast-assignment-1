@@ -8,7 +8,7 @@ from . import FIXTURES_DIR, OUTPUT_DIR
 
 @pytest.fixture(autouse=True)
 def run_before_and_after_tests() -> None:
-    """Fixture to execute commands before and after a test is run"""
+    """Fixture to execute commands befor and after a test is run"""
     # Setup: fill with any logic you want
 
     yield # this is where the testing happens
@@ -46,14 +46,14 @@ def pt_life_expectancy_input() -> pd.DataFrame:
 def monkeypatch() -> pytest.MonkeyPatch:
     """Instantiating MonkeyPatch object."""
 
-    monkeypatch= pytest.MonkeyPatch()
+    patch = pytest.MonkeyPatch()
 
-    return monkeypatch
+    return patch
 
 @pytest.fixture(scope="session")
 def eu_life_expectancy_raw() -> pd.DataFrame:
     """Fixture to load the expected output of the cleaning script"""
-    eu_life_expectancy_raw = pd.read_csv(
+    baseline_df = pd.read_csv(
         FIXTURES_DIR / "eu_life_expectancy_raw.tsv")
 
-    return  eu_life_expectancy_raw
+    return  baseline_df
