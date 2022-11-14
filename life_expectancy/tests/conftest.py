@@ -1,5 +1,4 @@
 """Pytest configuration file"""
-import pathlib
 import pandas as pd
 import pytest
 
