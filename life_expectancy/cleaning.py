@@ -60,7 +60,7 @@ def clean_data(
     life_expectancy = life_expectancy[life_expectancy["region"]== region]
 
     life_expectancy = life_expectancy.astype(
-        {"year":int, "value": float})
+        {"year":"int64", "value": "float64"})
 
     life_expectancy = life_expectancy[
         ["unit","sex","age","region","year","value"]

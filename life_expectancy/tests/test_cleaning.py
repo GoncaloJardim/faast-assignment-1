@@ -13,7 +13,7 @@ def test_end_to_end(pt_life_expectancy_expected):
     ).head(50)
 
     pt_life_expectancy_expected = pt_life_expectancy_expected.head(50)
-    
+
     pd.testing.assert_frame_equal(
         pt_life_expectancy_actual, pt_life_expectancy_expected
     )
