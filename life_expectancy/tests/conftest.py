@@ -4,7 +4,6 @@ import pytest
 
 from . import FIXTURES_DIR, OUTPUT_DIR
 
-
 @pytest.fixture(autouse=True)
 def run_before_and_after_tests() -> None:
     """Fixture to execute commands before and after a test is run"""
@@ -19,5 +18,42 @@ def run_before_and_after_tests() -> None:
 
 @pytest.fixture(scope="session")
 def pt_life_expectancy_expected() -> pd.DataFrame:
+    """Fixture to load the expected output of the cleaning script."""
+
+    expected_df = pd.read_csv(
+        FIXTURES_DIR / "pt_life_expectancy_expected.csv")
+
+    expected_df = (
+        expected_df.
+        fillna(0).
+        astype({"year":"int64", "value": "float64"})
+    )
+
+    return expected_df
+
+@pytest.fixture(scope="session")
+def pt_life_expectancy_input() -> pd.DataFrame:
+    """Fixture to load and clean the original dataframe
+    and only keep the first 30 rows."""
+
+    created_df = pd.read_csv(
+        OUTPUT_DIR.joinpath("eu_life_expectancy_raw.tsv"),
+        sep="\t")
+    return created_df
+
+
+@pytest.fixture(scope="session")
+def monkeypatch() -> pytest.MonkeyPatch:
+    """Instantiating MonkeyPatch object."""
+
+    patch = pytest.MonkeyPatch()
+
+    return patch
+
+@pytest.fixture(scope="session")
+def eu_life_expectancy_raw() -> pd.DataFrame:
     """Fixture to load the expected output of the cleaning script"""
-    return pd.read_csv(FIXTURES_DIR / "pt_life_expectancy_expected.csv")
+    baseline_df = pd.read_csv(
+        FIXTURES_DIR / "eu_life_expectancy_expected.csv")
+
+    return  baseline_df
