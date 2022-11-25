@@ -2,12 +2,11 @@
 import pandas as pd
 import pytest
 
-from life_expectancy.cleaning import load_data
 from . import FIXTURES_DIR, OUTPUT_DIR
 
 @pytest.fixture(autouse=True)
 def run_before_and_after_tests() -> None:
-    """Fixture to execute commands befor and after a test is run"""
+    """Fixture to execute commands before and after a test is run"""
     # Setup: fill with any logic you want
 
     yield # this is where the testing happens
@@ -27,7 +26,7 @@ def pt_life_expectancy_expected() -> pd.DataFrame:
     expected_df = (
         expected_df.
         fillna(0).
-        astype({"year":int, "value": float})
+        astype({"year":"int64", "value": "float64"})
     )
 
     return expected_df
@@ -35,9 +34,11 @@ def pt_life_expectancy_expected() -> pd.DataFrame:
 @pytest.fixture(scope="session")
 def pt_life_expectancy_input() -> pd.DataFrame:
     """Fixture to load and clean the original dataframe
-    and only keep the first 5 rows."""
+    and only keep the first 30 rows."""
 
-    created_df = load_data()
+    created_df = pd.read_csv(
+        OUTPUT_DIR.joinpath("eu_life_expectancy_raw.tsv"),
+        sep="\t")
     return created_df
 
 
@@ -53,6 +54,6 @@ def monkeypatch() -> pytest.MonkeyPatch:
 def eu_life_expectancy_raw() -> pd.DataFrame:
     """Fixture to load the expected output of the cleaning script"""
     baseline_df = pd.read_csv(
-        FIXTURES_DIR / "eu_life_expectancy_raw.tsv")
+        FIXTURES_DIR / "eu_life_expectancy_expected.csv")
 
     return  baseline_df

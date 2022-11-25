@@ -66,6 +66,8 @@ def clean_data(
         ["unit","sex","age","region","year","value"]
         ]
 
+    life_expectancy.dropna(how="any", inplace=True)
+
     return life_expectancy
 
 def save_data(life_expectancy: pd.DataFrame) -> None:
