@@ -7,7 +7,7 @@ description = "First assignment of the FAAST Advance Foundations"
 authors = [
     {name = "Fernando Cordeiro<fernando@daredata.engineering>"}
 ]
-dependencies = ["pandas", "strenum", "numpy", "enum"]
+dependencies = ["pandas", "strenum", "numpy"]
 
 [project.optional-dependencies]
 dev = ["pytest", "pylint", "pytest-cov"]
