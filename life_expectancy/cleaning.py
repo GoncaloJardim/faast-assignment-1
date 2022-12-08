@@ -1,8 +1,10 @@
 """Cleaning Life Expectancy Data for Assignment 1- Data Cleaning Challenge."""
+# pylint: disable=invalid-name
 import argparse
 import pandas as pd
 import numpy as np
 from life_expectancy.config_load import ConfigLoad, DATA_PATH
+from life_expectancy.country_enum import Country
 
 
 def load_data(file_type : str = "csv") -> pd.DataFrame:
@@ -21,7 +23,7 @@ def load_data(file_type : str = "csv") -> pd.DataFrame:
 
 def clean_csv_data(
     life_expectancy: pd.DataFrame,
-    region: str = "PT") -> pd.DataFrame:
+    region: str = Country.PT) -> pd.DataFrame:
     """ Clean_data function does the following for DataFrame of csv origin:
         -Melts Date columns into a single column;
         -Split first column into 4 different;
@@ -44,16 +46,16 @@ def clean_csv_data(
                             value_name= "value")
 
     life_expectancy[["unit","sex","age","region"]] = (
-        life_expectancy["unit,sex,age,geotime"].
-        str.split(',', expand=True)
+        life_expectancy["unit,sex,age,geotime"]
+        .str.split(',', expand=True)
         )
     #As a lot of cells are just filled with ': ', we replace with NaN
     #and then drop any row that has NaN cells
     life_expectancy = (
-        life_expectancy.
-        drop(columns="unit,sex,age,geotime").
-        replace(": ",np.NaN).
-        dropna(how="any")
+        life_expectancy
+        .drop(columns="unit,sex,age,geotime")
+        .replace(": ",np.NaN)
+        .dropna(how="any")
         )
 
     life_expectancy["value"] = (
@@ -77,11 +79,11 @@ def clean_csv_data(
 
 def clean_json_data(
     life_expectancy: pd.DataFrame,
-    region: str = "PT") -> pd.DataFrame:
+    region: str = Country.PT) -> pd.DataFrame:
     """Cleans DataFrame from json origin.
     -Arg:
         - life_expectancy (pd.DataFrame): DataFrame loaded from load_json function.
-        - region (str): Country initials from which to filter the DataFrame. Default is 'PT'.
+        - region (Country): Country initials from which to filter the DataFrame. Default is PT.
     -Returns:
         - life_expectancy (pd.DataFrame): transformed DataFrame based on assigment criteria.
     """
@@ -102,7 +104,7 @@ def clean_json_data(
 def clean_data(
     life_expectancy: pd.DataFrame,
     file_type: str,
-    region: str = "PT"):
+    region: str = Country.PT):
     """Selects and runs apropriate cleaning function based on origin file type.
     -Args:
         -life_expectancy (pd.DataFrame): DataFrame loaded.
@@ -114,12 +116,12 @@ def clean_data(
 
     if file_type == "csv":
         df_ = clean_csv_data(life_expectancy, region)
-        print(df_)
         return df_
-    elif file_type == "json":
+
+    if file_type == "json":
         return clean_json_data(life_expectancy, region)
-    else :
-        return ValueError("""
+
+    return ValueError("""
             Invalid format was provided. Pass arg. 'json' or 'csv'""")
 
 def save_data(life_expectancy: pd.DataFrame) -> None:
@@ -132,16 +134,27 @@ def save_data(life_expectancy: pd.DataFrame) -> None:
 
 def main(
     file_type: str = "csv",
-    region: str ="PT",
-    ) -> None:
+    region: Country = Country.PT,
+    ) -> str:
     """Pipeline with functions for:
     - Loading data;
     - Cleaning data;
     - Saving data;"""
 
-    eurostat_df = load_data(file_type)
-    eurostat_df = clean_data(eurostat_df, file_type, region)
-    eurostat_df = save_data(eurostat_df)
+    valid_countries = [member.value for member in Country]
+
+    if region in valid_countries:
+
+        eurostat_df = load_data(file_type)
+        eurostat_df = clean_data(eurostat_df, file_type, region)
+        eurostat_df = save_data(eurostat_df)
+
+    else:
+        print(f"""
+        Incorrect country.
+        Please pass one of these countries : {valid_countries}""")
+
+
 
 
 if __name__ == "__main__": # pragma: no cover
@@ -152,7 +165,7 @@ if __name__ == "__main__": # pragma: no cover
         '--region',
         type=str,
         help="Indicate preferred country with 2 capital letters (default= 'PT').",
-        default="PT",
+        default=Country.PT,
     )
     parser.add_argument(
         '-f',

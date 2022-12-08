@@ -1,4 +1,5 @@
 """Adapters to load json and csv files."""
+# pylint: disable=invalid-name
 import pathlib
 from pathlib import Path
 import pandas as pd
@@ -40,8 +41,7 @@ class ConfigLoad:
         """Based on date format, loads data for specific file."""
         if self.file_type == "csv":
             return self.load_csv()
-        elif self.file_type == "json":
+        if self.file_type == "json":
             return self.load_json()
-        else:
-            raise ValueError("""
+        raise ValueError("""
             Invalid format was provided. Pass arg. 'json' or 'csv'""")
