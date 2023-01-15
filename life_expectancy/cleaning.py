@@ -143,18 +143,17 @@ def main(
 
     valid_countries = [member.value for member in Country]
 
-    if region in valid_countries:
+    if region not in valid_countries:
+        raise ValueError(f"""
+             Incorrect country.
+             Please pass one of these countries : {valid_countries}"""
+        )
 
-        eurostat_df = load_data(file_type)
-        eurostat_df = clean_data(eurostat_df, file_type, region)
-        eurostat_df = save_data(eurostat_df)
+    eurostat_df = load_data(file_type)
+    eurostat_df = clean_data(eurostat_df, file_type, region)
+    eurostat_df = save_data(eurostat_df)
 
-    else:
-        print(f"""
-        Incorrect country.
-        Please pass one of these countries : {valid_countries}""")
-
-
+    return "pipeline successfully ran."
 
 
 if __name__ == "__main__": # pragma: no cover
@@ -179,6 +178,5 @@ if __name__ == "__main__": # pragma: no cover
     region_letters = args.region
     file_format = args.format_type
 
-    #Run pipeline:
-
+    # run pipeline
     main(file_format, region_letters)

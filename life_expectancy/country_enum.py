@@ -60,3 +60,7 @@ class Country(StrEnum):
             if member.value == value:
                 return member
         return None
+
+    @classmethod
+    def _possible_coountries(cls):
+        return [country.value for country in Country]
