@@ -2,6 +2,7 @@
 import pandas as pd
 import pytest
 
+from life_expectancy.country_enum import Country
 from . import FIXTURES_DIR, OUTPUT_DIR
 
 @pytest.fixture(autouse=True)
@@ -32,7 +33,7 @@ def pt_life_expectancy_expected() -> pd.DataFrame:
     return expected_df
 
 @pytest.fixture(scope="session")
-def pt_life_expectancy_input() -> pd.DataFrame:
+def pt_life_expectancy_input_csv() -> pd.DataFrame:
     """Fixture to load and clean the original dataframe
     and only keep the first 30 rows."""
 
@@ -41,6 +42,16 @@ def pt_life_expectancy_input() -> pd.DataFrame:
         sep="\t")
     return created_df
 
+@pytest.fixture(scope="session")
+def pt_life_expectancy_input_json() -> pd.DataFrame:
+    """Fixture to load and clean the original dataframe
+    and only keep the first 30 rows."""
+
+    created_df = pd.read_json(
+        OUTPUT_DIR.joinpath("eurostat_life_expect.json"),
+        typ="frame")
+
+    return created_df
 
 @pytest.fixture(scope="session")
 def monkeypatch() -> pytest.MonkeyPatch:
@@ -57,3 +68,8 @@ def eu_life_expectancy_raw() -> pd.DataFrame:
         FIXTURES_DIR / "eu_life_expectancy_expected.csv")
 
     return  baseline_df
+
+@pytest.fixture(scope="session")
+def countries()-> Country:
+    """Returns Country class."""
+    return Country
