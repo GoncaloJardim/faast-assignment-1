@@ -1,4 +1,0 @@
-[alias]
-set-email-personal = !"git config user.email 'fernando_cordeiro@live.com' && git config user.name 'Fernando Cordeiro'"
-git set-email-personal
-git config -e
